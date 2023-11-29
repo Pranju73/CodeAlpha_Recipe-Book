@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="1.css"> -->
+    <title>Recipe Book</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-image: url("https://img.freepik.com/premium-photo/food-cooking-background-stone-texture-with-sea-salt-pepper-garlic-parsley-light-grey-abstract-food-background-empty-space-text-can-be-used-food-posters-design-menu-top-view_253362-16400.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100vh ;
+}
+h1{
+    color: #83bee4;
+    text-align:left;
+    text-decoration: underline;
+    text-shadow: 2px 2px rgb(32, 29, 29);
+    font-family: cursive;
+    
+}
+h2{
+    color: #1e45cf;
+    text-align:center;
+    text-decoration: underline;
+    font-family: 'Times New Roman', Times, serif;
+}
+label {
+    width: 100%;
+    font-family: cursive;
+    background-color: #77cae1;   
+    padding: 12px 20px;
+
+    display: inline-block;
+    border: 1px solid #3b07c9;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  textarea,input{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid #3b07c9;
+    border-radius: 4px;
+    box-sizing: border-box;
+  
+  }
+button {
+    background-color: #24c693;
+    border: none;
+    color: rgb(20, 7, 7);
+    border-radius: 12px;
+    padding: 15px 32px;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+ 
+  }
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.recipe {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.modal{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content{
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    width: 80%;
+}
+
+.close{
+    color: #fa0000;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><img src="icon.png" alt="" height="40px" width="40px">Recipe Book</h1>
+        <div id="recipe-list"></div>
+        <button id="add-recipe-btn">Add Recipe</button>
+    </div>
+
+    
+    <div  id="add-recipe-modal" class="modal" >
+        <div  style="background-color: rgb(150, 228, 86); height: 70%; width: 30%;" class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Recipe</h2>
+            <form id="add-recipe-form">
+                <label for="recipe-name">Name Of Recipe:</label>
+                <input  type="text" id="recipe-name" required>
+
+                <label for="ingredients">Ingredients:</label>
+                <textarea id="ingredients" required></textarea>
+
+                <label for="instructions">Instructions:</label>
+                <textarea id="instructions" required></textarea>
+
+                <button type="submit">Add Recipe</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const recipeList = document.getElementById('recipe-list');
+    const addRecipeBtn = document.getElementById('add-recipe-btn');
+    const addRecipeModal = document.getElementById('add-recipe-modal');
+    const closeBtn = document.querySelector('.close');
+    const addRecipeForm = document.getElementById('add-recipe-form');
+
+    addRecipeBtn.addEventListener('click', function () {
+        addRecipeModal.style.display = 'block';
+    });
+
+    closeBtn.addEventListener('click', function () {
+        addRecipeModal.style.display = 'none';
+    });
+
+    addRecipeForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const recipeName = document.getElementById('recipe-name').value;
+        const ingredients = document.getElementById('ingredients').value;
+        const instructions = document.getElementById('instructions').value;
+
+        if (recipeName && ingredients && instructions) {
+            const recipe = createRecipe(recipeName, ingredients, instructions);
+            recipeList.appendChild(recipe);
+            addRecipeForm.reset();
+
+            addRecipeModal.style.display = 'none';
+        } else {
+            alert('Please fill out all fields.');
+        }
+    });
+
+    function createRecipe(name, ingredients, instructions) {
+        const recipeDiv = document.createElement('div');
+        recipeDiv.classList.add('recipe');
+
+        const nameElement = document.createElement('h3');
+        nameElement.textContent = name;
+
+        const ingredientsElement = document.createElement('p');
+        ingredientsElement.textContent = 'Ingredients: ' + ingredients;
+
+        const instructionsElement = document.createElement('p');
+        instructionsElement.textContent = 'Instructions: ' + instructions;
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete Recipe';
+        deleteBtn.addEventListener('click', function () {
+            recipeList.removeChild(recipeDiv);
+        });
+
+        recipeDiv.appendChild(nameElement);
+        recipeDiv.appendChild(ingredientsElement);
+        recipeDiv.appendChild(instructionsElement);
+        recipeDiv.appendChild(deleteBtn);
+
+        return recipeDiv;
+    }
+});
+
+    </script>
+</body>
+</html>
